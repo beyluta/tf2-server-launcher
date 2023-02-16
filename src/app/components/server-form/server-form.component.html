@@ -1,0 +1,53 @@
+<div class="box-form-overlay" style="top: 0; left: 0; bottom: 0; right: 0">
+  <div class="server-form">
+    <div class="header">
+      <h3>Create a dedicated server</h3>
+      <h6>Fill the following information</h6>
+    </div>
+    <div>
+      <label for="serverName"><h5>Server Name</h5></label>
+      <input
+        placeholder="My Awesome Server"
+        name="serverName"
+        [(ngModel)]="serverName"
+      />
+    </div>
+    <div>
+      <label for="serverPassword"><h5>Server Password (Optional)</h5></label>
+      <input
+        placeholder="MySecurePassword123"
+        name="serverPassword"
+        [(ngModel)]="serverPassword"
+      />
+    </div>
+    <div>
+      <label for="ip"><h5>IP (Optional)</h5></label>
+      <input placeholder="127.0.0.1" type="number" name="ip" [(ngModel)]="ip" />
+    </div>
+    <div>
+      <label for="port"><h5>Port (Optional)</h5></label>
+      <input placeholder="27015" type="number" name="port" [(ngModel)]="port" />
+    </div>
+    <div>
+      <label for="args"><h5>Launch arguments (Optional)</h5></label>
+      <input
+        value="-console -game tf +sv_pure 1 +randommap +maxplayers 24"
+        placeholder="Arguments (Optional)"
+        name="args"
+        [(ngModel)]="args"
+      />
+    </div>
+    <div>
+      <label for="config"><h5>Config (Optional)</h5></label>
+      <textarea
+        name="config"
+        [(ngModel)]="configArgs"
+        placeholder='#Server config file&#10;&#10;hostname "My Server Name"&#10;sv_password "myPassword"'
+      ></textarea>
+    </div>
+    <div class="btns">
+      <div class="create-srv" (click)="cancel()">Cancel</div>
+      <div class="create-srv" (click)="createDirectory()">Confirm</div>
+    </div>
+  </div>
+</div>

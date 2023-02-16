@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    --primary: rgb(199, 79, 55);
+    --secondary: rgb(210, 196, 78);
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    background-color: rgb(30, 32, 33);
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgb(30, 32, 33);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(199, 79, 55);
+    border-radius: 10px;
+}
