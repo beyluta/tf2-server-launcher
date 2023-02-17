@@ -48,6 +48,10 @@ app.on('activate', function () {
 })
 
 /* ------------------ IPC ------------------ */
+ipcMain.on('navigate-to-folder', async (event, arg) => { 
+    exec(`start "" "${arg.savePath}"`);
+});
+
 ipcMain.on('create-default-server-path', async (event, arg) => {
     await new Promise((resolve, reject) => {
         if (!fs.existsSync(arg.savePath)) {

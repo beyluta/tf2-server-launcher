@@ -52,6 +52,10 @@ export class AppComponent implements OnInit {
     });
   }
 
+  navigateToFolder(path: string) {
+    this.electronIPCService.navigateToFolder({ savePath: `${this.defaultGameServersPath}\\${path}` });
+  }
+
   createGameServer() {
     this.showCreateServerModal = !this.showCreateServerModal;
   }

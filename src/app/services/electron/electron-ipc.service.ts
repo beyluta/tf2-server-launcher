@@ -19,6 +19,10 @@ export class ElectronIPCService {
     });
   }
 
+  navigateToFolder(opts: { savePath: string }) {
+    this.electronService.ipcRenderer.send('navigate-to-folder', opts);
+  }
+
   createDirectory(opts: { savePath: string }) {
     this.electronService.ipcRenderer.send('create-default-server-path', opts);
     this.electronService.ipcRenderer.on('create-default-server-path-reply', (event, arg) => {
