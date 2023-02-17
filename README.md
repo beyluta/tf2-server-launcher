@@ -1,10 +1,10 @@
 # TF2 Server Launcher
 
-<center>
-<img src="src/assets/imgs/Logo.png">
-
-Create, configure, and launch TF2 servers with ease.
-</center>
+<div align="center">
+  <img src="src/assets/imgs/Logo.png">
+  
+  Create, configure, and launch TF2 servers with ease.
+</div>
 
 <br>
 
