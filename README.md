@@ -1,27 +1,55 @@
-# Tf2ServerManager
+# TF2 Server Launcher
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.5.
+<center>
+<img src="src/assets/imgs/Logo.png">
 
-## Development server
+Create, configure, and launch TF2 servers with ease.
+</center>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+<br>
 
-## Code scaffolding
+# Building the project
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Make sure that both of these are installed. There is no guarantee that this will work on other versions of Node or Angular.
 
-## Build
+> This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.5.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+> This project was developed under [Electron](https://www.npmjs.com/package/electron) version 10.0.0.
 
-## Running unit tests
+<br>        
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Start by installing the dependencies using npm
 
-## Running end-to-end tests
+```
+npm i
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+To work on the interface, use `ng serve` to start the development server. This will not enable the functionalities built with Electron.
+```
+ng serve
+```
 
-## Further help
+To start the project with Electron, use `npm run start`. This compiles the project and starts the Electron app.
+```
+npm run start
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Contributing
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Add yourself to the CONTRIBUTORS.txt file
+6. Open a Pull Request
+
+# Usage
+
+## 1- Create a server
+![Create a server](src/assets/gifs/sv-create.gif)
+
+## 2- Download / Update a server
+![Download / Update a server](src/assets/gifs/sv-download.gif)
+
+## 3- Launch a server
+![Launch a server](src/assets/gifs/sv-launch.gif)
