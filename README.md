@@ -45,11 +45,11 @@ npm run start
 
 # Usage
 
-## 1- Create a server
+### 1- Create a server
 ![Create a server](src/assets/gifs/sv-create.gif)
 
-## 2- Download / Update a server
+### 2- Download / Update a server
 ![Download / Update a server](src/assets/gifs/sv-download.gif)
 
-## 3- Launch a server
+### 3- Launch a server
 ![Launch a server](src/assets/gifs/sv-launch.gif)
