@@ -48,7 +48,7 @@ app.on('activate', function () {
 })
 
 /* ------------------ IPC ------------------ */
-ipcMain.on('navigate-to-folder', async (event, arg) => { 
+ipcMain.on('navigate-to-folder', async (event, arg) => {
     exec(`start "" "${arg.savePath}"`);
 });
 
@@ -227,15 +227,23 @@ ipcMain.on('download-file', async (event, arg) => {
 });
 
 ipcMain.on('run-server', async (event, arg) => {
-    await new Promise((resolve, reject) => {
-        const srcds = spawn(`${arg.savePath.replace('steamcmd.zip', 'steamapps\\common\\Team Fortress 2 Dedicated Server\\run.bat')}`);
-        srcds.on('error', (err) => {
-            if (err) reject(err);
-        });
+    const config = JSON.parse(fs.readFileSync(arg.savePath.replace('steamcmd.zip', 'config.json'), 'utf8'));
 
-        resolve();
+    const child = spawn(arg.savePath.replace('steamcmd.zip', `\"steamapps\\common\\Team Fortress 2 Dedicated Server\\srcds.exe\" ${config.args} ${config.ip ? '-ip ' + config.ip : ''} ${config.port ? '-port ' + config.port : ''}`), {
+        shell: true,
+        detached: true,
+        stdio: ['ignore', 'ignore', 'ignore'],
     });
 
-    event.reply('run-server-reply', 'success');
+    child.unref();
+
+    event.reply('run-server-reply', {
+        status: 'success',
+        pid: child.pid
+    });
+});
+
+ipcMain.on('kill-server', async (event, arg) => {
+    spawn("taskkill", ["/pid", arg.pid, '/f', '/t']);
 });
 /* ------------------ IPC ------------------ */

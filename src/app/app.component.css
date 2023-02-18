@@ -18,6 +18,14 @@
     justify-content: space-between;
 }
 
+.servers {
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .serverName {
     text-transform: none;
     font-size: 14px;

@@ -9,6 +9,7 @@ import { ElectronIPCService } from './services/electron/electron-ipc.service';
 export class AppComponent implements OnInit {
   private steamCMDDownloadURL: string = 'http://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip';
   private defaultGameServersPath: string = 'C:\\TFGameServers';
+  public activeGameServerPIDs: Map<string, number> = new Map();
   public gameServers: [] = [];
   public showCreateServerModal: boolean = false;
   public showLoaderModal: boolean = false;
@@ -42,7 +43,7 @@ export class AppComponent implements OnInit {
     if (event === 'close') {
       this.showCreateServerModal = false;
     }
-    
+
     this.loadGameServers();
   }
 
@@ -69,9 +70,17 @@ export class AppComponent implements OnInit {
     this.showLoaderModal = false;
   }
 
-  startServer(serverName: string) {
-    this.electronIPCService.startServer({
-      savePath: `${this.defaultGameServersPath}\\${serverName}\\steamcmd.zip`
-    });
+  async startServer(serverName: string) {
+    if (!this.activeGameServerPIDs.has(serverName)) {
+      const pid = await this.electronIPCService.startServer({
+        savePath: `${this.defaultGameServersPath}\\${serverName}\\steamcmd.zip`
+      });
+
+      this.activeGameServerPIDs.set(serverName, pid);
+    } else {
+      this.electronIPCService.killServer({ pid: Number(this.activeGameServerPIDs.get(serverName)) });
+
+      this.activeGameServerPIDs.delete(serverName);
+    }
   }
 }

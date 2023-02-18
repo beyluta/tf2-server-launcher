@@ -54,12 +54,19 @@ export class ElectronIPCService {
     });
   }
 
-  startServer(opts: { savePath: string }) {
+  async startServer(opts: { savePath: string }): Promise<any> {
     this.electronService.ipcRenderer.send('run-server', opts);
-    this.electronService.ipcRenderer.on('run-server-reply', (event, arg) => {
-      if (arg === 'success') {
-        console.log('Server started successfully');
-      }
+    return await new Promise((resolve, reject) => {
+      this.electronService.ipcRenderer.on('run-server-reply', (event, arg) => {
+        if (arg.status === 'success') {
+          console.log('Server started successfully. PID: ' + arg.pid);
+          resolve(Number(arg.pid));
+        }
+      });
     });
+  }
+
+  killServer(opts: { pid: number }) {
+    this.electronService.ipcRenderer.send('kill-server', opts);
   }
 }
