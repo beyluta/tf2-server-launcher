@@ -10,11 +10,13 @@
 
 # Building the project
 
-Make sure that both of these are installed. There is no guarantee that this will work on other versions of Node or Angular.
+Make sure these are installed. There is no guarantee that it will work on other versions of Angular, Electron, or Node.
 
 > This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.5.
 
-> This project was developed under [Electron](https://www.npmjs.com/package/electron) version 10.0.0.
+> This project uses [Node](https://github.com/nodejs/node) version 19.3.0
+
+> This project uses [Electron](https://www.npmjs.com/package/electron) version 10.0.0.
 
 <br>        
 
