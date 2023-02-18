@@ -37,7 +37,36 @@ function createWindow() {
     })
 }
 
-app.on('ready', createWindow)
+/** 
+ * Merges two root directories with the same name.
+ * 
+ * @param {string} rootDir1
+ * @param {string} rootDir2
+*/
+function deepMergeDir(rootDir1, rootDir2) {
+    const files1 = fs.readdirSync(rootDir1);
+    const files2 = fs.readdirSync(rootDir2);
+
+    for (let i = 0; i < files1.length; i++) {
+        for (let j = 0; j < files2.length; j++) {
+            if (files1[i] === files2[j]) {
+                deepMergeDir(`${rootDir1}\\${files1[i]}`, `${rootDir2}\\${files2[j]}`);
+            }
+        }
+    }
+
+    for (let i = 0; i < files1.length; i++) {
+        if (!files2.includes(files1[i])) {
+            fs.renameSync(`${rootDir1}\\${files1[i]}`, `${rootDir2}\\${files1[i]}`);
+        }
+    }
+
+    fs.rmdirSync(rootDir1);
+}
+
+deepMergeDir("C:\\Users\\pepez\\Desktop\\sourcemod-1.11.0-git6931-windows", "C:\\Users\\pepez\\Desktop\\mmsource-1.11.0-git1148-windows");
+
+app.on('ready', createWindow);
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
