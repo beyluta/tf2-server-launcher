@@ -156,23 +156,11 @@ ipcMain.on('navigate-to-folder', async (event, arg) => {
 });
 
 ipcMain.on('create-default-server-path', async (event, arg) => {
-    await new Promise((resolve, reject) => {
-        if (!fs.existsSync(arg.savePath)) {
-            fs.mkdirSync(arg.savePath);
-            resolve();
-        }
-        reject();
-    });
+    await createFolder(arg.savePath);
 });
 
 ipcMain.on('create-server-directory', async (event, arg) => {
-    await new Promise((resolve, reject) => {
-        if (!fs.existsSync(arg.savePath)) {
-            fs.mkdirSync(arg.savePath);
-            resolve();
-        }
-        reject();
-    });
+    await createFolder(arg.savePath);
 });
 
 ipcMain.on('create-directory-config', async (event, arg) => {
