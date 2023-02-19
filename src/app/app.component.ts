@@ -70,6 +70,14 @@ export class AppComponent implements OnInit {
     this.showLoaderModal = false;
   }
 
+  async downloadSourcemod(serverName: string) {
+    this.showLoaderModal = true;
+    await this.electronIPCService.downloadSourcemod({
+      savePath: `${this.defaultGameServersPath}\\${serverName}`
+    });
+    this.showLoaderModal = false;
+  }
+
   async startServer(serverName: string) {
     if (!this.activeGameServerPIDs.has(serverName)) {
       const pid = await this.electronIPCService.startServer({

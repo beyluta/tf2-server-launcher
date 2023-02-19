@@ -69,4 +69,16 @@ export class ElectronIPCService {
   killServer(opts: { pid: number }) {
     this.electronService.ipcRenderer.send('kill-server', opts);
   }
+
+  async downloadSourcemod(opts: { savePath: string }) {
+    this.electronService.ipcRenderer.send('download-sourcemod', opts);
+    return await new Promise((resolve, reject) => {
+      this.electronService.ipcRenderer.on('download-sourcemod-reply', (event, arg) => {
+        if (arg === 'success') {
+          console.log('Sourcemod downloaded successfully');
+          resolve('success');
+        }
+      });
+    });
+  }
 }
