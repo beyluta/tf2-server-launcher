@@ -56,7 +56,7 @@
 }
 
 .file:hover::after{
-    content: 'Open server folder';
+    content: 'Open Server Folder';
     background-color: rgb(14, 14, 14);
     color: rgb(214, 214, 214);
     border-radius: 5px;
