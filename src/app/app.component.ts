@@ -13,14 +13,11 @@ export class AppComponent implements OnInit {
   public gameServers: [] = [];
   public showCreateServerModal: boolean = false;
   public showLoaderModal: boolean = false;
-  public loaderContext: string;
-  public loaderDescription: string;
+  public showSourcemodLoaderModal: boolean = false;
 
   constructor(private electronIPCService: ElectronIPCService) { }
 
   ngOnInit() {
-    this.loaderContext = 'Downloading or updating your game server';
-    this.loaderDescription = 'Downloading can take a while, please be patient. This may take up to an hour.';
     this.electronIPCService.createDirectory({ savePath: this.defaultGameServersPath });
   }
 
@@ -68,6 +65,14 @@ export class AppComponent implements OnInit {
       savePath: `${this.defaultGameServersPath}\\${serverName}\\steamcmd.zip`
     });
     this.showLoaderModal = false;
+  }
+
+  async downloadSourcemod(serverName: string) {
+    this.showSourcemodLoaderModal = true;
+    await this.electronIPCService.downloadSourcemod({
+      savePath: `${this.defaultGameServersPath}\\${serverName}`
+    });
+    this.showSourcemodLoaderModal = false;
   }
 
   async startServer(serverName: string) {

@@ -7,6 +7,70 @@
     row-gap: 20px;
 }
 
+.download-sourcemod:hover::after{
+    content: 'Download SourceMod';
+    background-color: rgb(14, 14, 14);
+    color: rgb(214, 214, 214);
+    border-radius: 5px;
+    padding: 5px 15px;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    font-size: 14px;
+    text-transform: none;
+    top: 0px;
+    width: max-content;
+    left: -180px;
+}
+
+.download-server:hover::after{
+    content: 'Download Server';
+    background-color: rgb(14, 14, 14);
+    color: rgb(214, 214, 214);
+    border-radius: 5px;
+    padding: 5px 15px;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    font-size: 14px;
+    text-transform: none;
+    top: 0px;
+    width: max-content;
+    left: -150px;
+}
+
+.start:hover::after{
+    content: 'Start/Stop Server';
+    background-color: rgb(14, 14, 14);
+    color: rgb(214, 214, 214);
+    border-radius: 5px;
+    padding: 5px 15px;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    font-size: 14px;
+    text-transform: none;
+    top: 0px;
+    width: max-content;
+    left: -150px;
+}
+
+.file:hover::after{
+    content: 'Open Server Folder';
+    background-color: rgb(14, 14, 14);
+    color: rgb(214, 214, 214);
+    border-radius: 5px;
+    padding: 5px 15px;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    font-size: 14px;
+    text-transform: none;
+    top: 0px;
+    width: max-content;
+    left: -150px;
+}
+
 .srv {
     width: 600px;
     padding: 10px 10px;

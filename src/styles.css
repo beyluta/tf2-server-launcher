@@ -2,6 +2,7 @@
 :root {
     --primary: rgb(199, 79, 55);
     --secondary: rgb(210, 196, 78);
+    --special: rgb(48, 61, 87);
 }
 
 html, body {
