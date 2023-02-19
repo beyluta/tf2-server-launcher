@@ -339,7 +339,8 @@ ipcMain.on('kill-server', async (event, arg) => {
 });
 
 ipcMain.on('download-sourcemod', async (event, arg) => {
-    if (!fs.existsSync(`${arg.savePath}\\steamapps\\common\\Team Fortress 2 Dedicated Server\\tf\\addons`)) {
+    const pathToTFFolder = `${arg.savePath}\\steamapps\\common\\Team Fortress 2 Dedicated Server\\tf`;
+    if (fs.existsSync(pathToTFFolder) && !fs.existsSync(`${pathToTFFolder}\\addons`)) {
         const sourcemodLinks = await getDownloadLinks('https://www.sourcemod.net/downloads.php?branch=stable');
         const metamodLinks = await getDownloadLinks('https://www.sourcemm.net/downloads.php?branch=stable');
         await createFolder(`${arg.savePath}\\sourcemod`);
@@ -347,7 +348,7 @@ ipcMain.on('download-sourcemod', async (event, arg) => {
         await downloadZIPFileByURL('sourcemod.zip', sourcemodLinks[0], `${arg.savePath}\\sourcemod`);
         await downloadZIPFileByURL('metamod.zip', metamodLinks[0], `${arg.savePath}\\metamod`);
         deepMergeDir(`${arg.savePath}\\metamod`, `${arg.savePath}\\sourcemod`);
-        deepMergeDir(`${arg.savePath}\\sourcemod`, `${arg.savePath}\\steamapps\\common\\Team Fortress 2 Dedicated Server\\tf`);
+        deepMergeDir(`${arg.savePath}\\sourcemod`, pathToTFFolder);
     }
 
     event.reply('download-sourcemod-reply', 'success');
