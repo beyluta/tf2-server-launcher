@@ -81,4 +81,16 @@ export class ElectronIPCService {
       });
     });
   }
+
+  async deleteServerFiles(opts: { savePath: string }) {
+    this.electronService.ipcRenderer.send('delete-server-files', opts);
+    return await new Promise((resolve, reject) => {
+      this.electronService.ipcRenderer.on('delete-server-files-reply', (event, arg) => {
+        if (arg === 'success') {
+          console.log('Server files deleted successfully');
+          resolve('success');
+        }
+      });
+    });
+  }
 }

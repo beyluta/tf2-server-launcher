@@ -14,7 +14,7 @@ let mainWindow
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        icon: 'src/assets/imgs/Icon.png',
+        icon: 'favicon.ico',
         width: 750,
         height: 700,
         webPreferences: {
@@ -34,10 +34,11 @@ function createWindow() {
     // mainWindow.webContents.openDevTools();
     mainWindow.setMenu(null);
     mainWindow.setMinimumSize(700, 700);
+    mainWindow.setTitle('TF2 Server Launcher');
 
     mainWindow.on('closed', function () {
-        mainWindow = null
-    })
+        mainWindow = null;
+    });
 }
 
 /** 
@@ -50,10 +51,8 @@ async function getDownloadLinks(url) {
     return await new Promise((resolve, reject) => {
         request(url, (error, response, body) => {
             if (error) reject(error);
-
             const $ = cheerio.load(body);
             const links = $('.quick-download').map((i, link) => $(link).attr('href')).get();
-
             resolve(links);
         });
     });
@@ -68,9 +67,24 @@ async function createFolder(path) {
     return await new Promise((resolve, reject) => {
         fs.mkdir(path, (err) => {
             if (err) reject(err);
-
             resolve();
         });
+    });
+}
+
+/**
+ * Deletes a folder recursively.
+ * @param {string} path 
+ * @returns 
+ */
+async function deleteFolderRecursively(path) {
+    return await new Promise((resolve, reject) => {
+        if (fs.existsSync(path)) {
+            fs.rmdir(path, { recursive: true, force: true }, (err) => {
+                if (err) reject(err);
+                resolve();
+            });
+        }
     });
 }
 
@@ -352,5 +366,12 @@ ipcMain.on('download-sourcemod', async (event, arg) => {
     }
 
     event.reply('download-sourcemod-reply', 'success');
+});
+
+ipcMain.on('delete-server-files', async (event, arg) => {
+    await deleteFolderRecursively(arg.savePath).catch((err) => {
+        console.error(err);
+    });
+    event.reply('delete-server-files-reply', 'success');
 });
 /* ------------------ IPC ------------------ */

@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   public showCreateServerModal: boolean = false;
   public showLoaderModal: boolean = false;
   public showSourcemodLoaderModal: boolean = false;
+  public showDefaultLoader: boolean = false;
 
   constructor(private electronIPCService: ElectronIPCService) { }
 
@@ -87,5 +88,13 @@ export class AppComponent implements OnInit {
 
       this.activeGameServerPIDs.delete(serverName);
     }
+  }
+
+  async deleteServerFiles(serverName: string) {
+    this.showDefaultLoader = true;
+    await this.electronIPCService.deleteServerFiles({
+      savePath: `${this.defaultGameServersPath}\\${serverName}`
+    });
+    this.showDefaultLoader = false;
   }
 }

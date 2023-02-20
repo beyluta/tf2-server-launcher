@@ -68,7 +68,23 @@
     text-transform: none;
     top: 0px;
     width: max-content;
-    left: -150px;
+    left: -170px;
+}
+
+.trash:hover::after{
+    content: 'Delete Server';
+    background-color: rgb(14, 14, 14);
+    color: rgb(214, 214, 214);
+    border-radius: 5px;
+    padding: 5px 15px;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    font-size: 14px;
+    text-transform: none;
+    top: 0px;
+    width: max-content;
+    left: -120px;
 }
 
 .srv {
