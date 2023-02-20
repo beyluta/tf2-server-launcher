@@ -1,7 +1,7 @@
 # TF2 Server Launcher
 
 <div align="center">
-  <img src="src/assets/imgs/Logo.png">
+  <img width="150px" src="favicon.png">
   
   Create, configure, and launch TF2 servers with ease.
 </div>
