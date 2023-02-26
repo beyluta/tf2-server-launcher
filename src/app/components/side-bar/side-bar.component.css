@@ -1,0 +1,29 @@
+.sideb-bar {
+    height: 100vh;
+    background:  rgb(43, 44, 44);
+    width: 100vw;
+    max-width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn > svg {
+    width: 25px;
+    fill: white;
+    transform: translateY(2px);
+}
+
+.btn {
+    padding: 10px;
+    background:  rgb(30, 32, 33);
+    border-radius: 10px;
+    height: max-content;
+    margin-top: 10px;
+    transition: .2s ease-in-out;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+}

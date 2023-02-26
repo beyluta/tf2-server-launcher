@@ -23,12 +23,37 @@ export class ElectronIPCService {
     this.electronService.ipcRenderer.send('navigate-to-folder', opts);
   }
 
-  createDirectory(opts: { savePath: string }) {
-    this.electronService.ipcRenderer.send('create-default-server-path', opts);
-    this.electronService.ipcRenderer.on('create-default-server-path-reply', (event, arg) => {
-      if (arg === 'success') {
-        console.log('Default server path created successfully');
-      }
+  async createDirectory(opts: { savePath: string, config?: {} }): Promise<void> {
+    return await new Promise((resolve, reject) => {
+      this.electronService.ipcRenderer.send('create-default-server-path', opts);
+      this.electronService.ipcRenderer.on('create-default-server-path-reply', (event, arg) => {
+        if (arg === 'success') {
+          console.log('Default server path created successfully');
+          resolve();
+        }
+      });
+    });
+  }
+
+  async getConfigFile(opts: { savePath: string }): Promise<any> {
+    this.electronService.ipcRenderer.send('get-config-file', opts);
+    return await new Promise((resolve, reject) => {
+      this.electronService.ipcRenderer.on('get-config-file-reply', (event, arg) => {
+        console.log('Config file retrieved successfully');
+        resolve(JSON.parse(arg));
+      });
+    });
+  }
+
+  async replaceConfigFile(opts: { savePath: string, config: {} }): Promise<void> {
+    return await new Promise((resolve, reject) => {
+      this.electronService.ipcRenderer.send('replace-config-file', opts);
+      this.electronService.ipcRenderer.on('replace-config-file-reply', (event, arg) => {
+        if (arg === 'success') {
+          console.log('Config file replaced successfully');
+          resolve();
+        }
+      });
     });
   }
 
@@ -70,7 +95,7 @@ export class ElectronIPCService {
     this.electronService.ipcRenderer.send('kill-server', opts);
   }
 
-  async downloadSourcemod(opts: { savePath: string }) {
+  async downloadSourcemod(opts: { savePath: string, downloadLinkSM: string, downloadLinkMM: string }) {
     this.electronService.ipcRenderer.send('download-sourcemod', opts);
     return await new Promise((resolve, reject) => {
       this.electronService.ipcRenderer.on('download-sourcemod-reply', (event, arg) => {

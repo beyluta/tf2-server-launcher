@@ -1,3 +1,8 @@
+.main-view {
+    display: flex;
+    flex-direction: row;
+}
+
 .box-srvs {
     display: flex;
     flex-direction: column;
@@ -180,4 +185,46 @@
     padding-top: 20px;
     width: 30px;
     fill: white;
+}
+
+.settings-container {
+    max-width: max-content;
+    height: max-content;
+    padding: 20px;
+    align-items: start;
+}
+
+.settings-container > h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.setting {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.setting > input {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+.setting > input:disabled {
+    color: rgb(201, 201, 201);
+}
+
+.setting > label {
+    text-transform: none;
+}
+
+.setting > label > h4 {
+    margin: 0;
+    padding: 0;
+}
+
+input:focus {
+    outline: none;
 }

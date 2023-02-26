@@ -7,8 +7,11 @@ import { ElectronIPCService } from './services/electron/electron-ipc.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  private steamCMDDownloadURL: string = 'http://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip';
-  private defaultGameServersPath: string = 'C:\\TFGameServers';
+  public steamCMDDownloadURL: string = 'http://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip';
+  public sourceModDownloadURL: string = 'https://www.sourcemod.net/downloads.php?branch=stable';
+  public metaModDownloadURL: string = 'https://www.sourcemm.net/downloads.php?branch=stable';
+  public defaultGameServersPath: string = 'C:\\TFGameServers';
+  public activeTab: string = 'servers';
   public activeGameServerPIDs: Map<string, number> = new Map();
   public gameServers: [] = [];
   public showCreateServerModal: boolean = false;
@@ -18,8 +21,24 @@ export class AppComponent implements OnInit {
 
   constructor(private electronIPCService: ElectronIPCService) { }
 
-  ngOnInit() {
-    this.electronIPCService.createDirectory({ savePath: this.defaultGameServersPath });
+  async ngOnInit() {
+    await this.electronIPCService.createDirectory({
+      savePath: this.defaultGameServersPath,
+      config: {
+        defaultServerPath: this.defaultGameServersPath,
+        steamCMDDownloadURL: this.steamCMDDownloadURL,
+        sourceModDownloadURL: this.sourceModDownloadURL,
+        metaModDownloadURL: this.metaModDownloadURL
+      }
+    });
+    const config = await this.electronIPCService.getConfigFile({ savePath: this.defaultGameServersPath });
+    this.steamCMDDownloadURL = config.steamCMDDownloadURL;
+    this.sourceModDownloadURL = config.sourceModDownloadURL;
+    this.metaModDownloadURL = config.metaModDownloadURL;
+  }
+
+  tab(tabName: string) {
+    this.activeTab = tabName;
   }
 
   ngAfterViewInit() {
@@ -71,7 +90,9 @@ export class AppComponent implements OnInit {
   async downloadSourcemod(serverName: string) {
     this.showSourcemodLoaderModal = true;
     await this.electronIPCService.downloadSourcemod({
-      savePath: `${this.defaultGameServersPath}\\${serverName}`
+      savePath: `${this.defaultGameServersPath}\\${serverName}`,
+      downloadLinkSM: this.sourceModDownloadURL,
+      downloadLinkMM: this.metaModDownloadURL
     });
     this.showSourcemodLoaderModal = false;
   }
@@ -96,5 +117,17 @@ export class AppComponent implements OnInit {
       savePath: `${this.defaultGameServersPath}\\${serverName}`
     });
     this.showDefaultLoader = false;
+  }
+
+  async updateConfig() {
+    this.showLoaderModal = true;
+    const config = {
+      defaultServerPath: this.defaultGameServersPath,
+      steamCMDDownloadURL: this.steamCMDDownloadURL,
+      sourceModDownloadURL: this.sourceModDownloadURL,
+      metaModDownloadURL: this.metaModDownloadURL
+    };
+    await this.electronIPCService.replaceConfigFile({ savePath: this.defaultGameServersPath, config });
+    this.showLoaderModal = false;
   }
 }

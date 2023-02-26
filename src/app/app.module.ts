@@ -6,12 +6,14 @@ import { NgxElectronModule } from 'ngx-electron';
 import { AppComponent } from './app.component';
 import { ServerFormComponent } from './components/server-form/server-form.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { SideBarComponent } from './components/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ServerFormComponent,
-    LoaderComponent
+    LoaderComponent,
+    SideBarComponent
   ],
   imports: [
     BrowserModule,
