@@ -14,7 +14,7 @@ let mainWindow
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        icon: 'src/assets/imgs/Icon.png',
+        icon: 'favicon.ico',
         width: 750,
         height: 700,
         webPreferences: {
@@ -33,28 +33,41 @@ function createWindow() {
 
     // mainWindow.webContents.openDevTools();
     mainWindow.setMenu(null);
-    mainWindow.setMinimumSize(700, 700);
+    mainWindow.setMinimumSize(750, 700);
+    mainWindow.setTitle('TF2 Server Launcher');
 
     mainWindow.on('closed', function () {
-        mainWindow = null
-    })
+        mainWindow = null;
+    });
 }
 
 /** 
  * Gets the download links from the SourceMod or Metamod:Source download pages.
  * The link to the ZIP download file must be passed as a parameter.
  * 
- * @param {string} path
+ * @param {string} url
 */
 async function getDownloadLinks(url) {
     return await new Promise((resolve, reject) => {
         request(url, (error, response, body) => {
             if (error) reject(error);
-
             const $ = cheerio.load(body);
             const links = $('.quick-download').map((i, link) => $(link).attr('href')).get();
-
             resolve(links);
+        });
+    });
+}
+
+/** 
+ * Creates a file in the specified path.
+ * @param {string} path - The path to the file.
+ * @param {string} content - The content of the file.
+*/
+async function createFile(path, content) {
+    return await new Promise((resolve, reject) => {
+        fs.writeFile(path, content, (err) => {
+            if (err) reject(err);
+            resolve();
         });
     });
 }
@@ -68,9 +81,24 @@ async function createFolder(path) {
     return await new Promise((resolve, reject) => {
         fs.mkdir(path, (err) => {
             if (err) reject(err);
-
             resolve();
         });
+    });
+}
+
+/**
+ * Deletes a folder recursively.
+ * @param {string} path 
+ * @returns 
+ */
+async function deleteFolderRecursively(path) {
+    return await new Promise((resolve, reject) => {
+        if (fs.existsSync(path)) {
+            fs.rmdir(path, { recursive: true, force: true }, (err) => {
+                if (err) reject(err);
+                resolve();
+            });
+        }
     });
 }
 
@@ -156,7 +184,15 @@ ipcMain.on('navigate-to-folder', async (event, arg) => {
 });
 
 ipcMain.on('create-default-server-path', async (event, arg) => {
-    await createFolder(arg.savePath);
+    if (!fs.existsSync(arg.savePath)) {
+        await createFolder(arg.savePath);
+    }
+
+    if (!fs.existsSync(`${arg.savePath}\\config.json`)) {
+        await createFile(`${arg.savePath}\\config.json`, JSON.stringify(arg.config));
+    }
+
+    event.reply('create-default-server-path-reply', 'success');
 });
 
 ipcMain.on('create-server-directory', async (event, arg) => {
@@ -176,7 +212,7 @@ ipcMain.on('create-directory-config', async (event, arg) => {
 });
 
 ipcMain.on('get-directories', async (event, arg) => {
-    const directories = fs.readdirSync(arg.savePath);
+    const directories = fs.readdirSync(arg.savePath).filter(dir => fs.lstatSync(`${arg.savePath}\\${dir}`).isDirectory());
     event.reply('get-directories-reply', directories);
 });
 
@@ -341,8 +377,8 @@ ipcMain.on('kill-server', async (event, arg) => {
 ipcMain.on('download-sourcemod', async (event, arg) => {
     const pathToTFFolder = `${arg.savePath}\\steamapps\\common\\Team Fortress 2 Dedicated Server\\tf`;
     if (fs.existsSync(pathToTFFolder) && !fs.existsSync(`${pathToTFFolder}\\addons`)) {
-        const sourcemodLinks = await getDownloadLinks('https://www.sourcemod.net/downloads.php?branch=stable');
-        const metamodLinks = await getDownloadLinks('https://www.sourcemm.net/downloads.php?branch=stable');
+        const sourcemodLinks = await getDownloadLinks(arg.downloadLinkSM);
+        const metamodLinks = await getDownloadLinks(arg.downloadLinkMM);
         await createFolder(`${arg.savePath}\\sourcemod`);
         await createFolder(`${arg.savePath}\\metamod`);
         await downloadZIPFileByURL('sourcemod.zip', sourcemodLinks[0], `${arg.savePath}\\sourcemod`);
@@ -352,5 +388,30 @@ ipcMain.on('download-sourcemod', async (event, arg) => {
     }
 
     event.reply('download-sourcemod-reply', 'success');
+});
+
+ipcMain.on('delete-server-files', async (event, arg) => {
+    await deleteFolderRecursively(arg.savePath).catch((err) => {
+        console.error(err);
+    });
+    event.reply('delete-server-files-reply', 'success');
+});
+
+ipcMain.on('get-config-file', async (event, arg) => {
+    const data = await new Promise((resolve, reject) => {
+        if (fs.existsSync(`${arg.savePath}/config.json`)) {
+            fs.readFile(`${arg.savePath}/config.json`, 'utf8', (err, data) => {
+                if (err) reject(err);
+                resolve(data);
+            });
+        }
+    });
+
+    event.reply('get-config-file-reply', data);
+});
+
+ipcMain.on('replace-config-file', async (event, arg) => {
+    await createFile(`${arg.savePath}/config.json`, JSON.stringify(arg.config));
+    event.reply('replace-config-file-reply', 'success');
 });
 /* ------------------ IPC ------------------ */
