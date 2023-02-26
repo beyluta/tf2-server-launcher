@@ -33,7 +33,7 @@ function createWindow() {
 
     // mainWindow.webContents.openDevTools();
     mainWindow.setMenu(null);
-    mainWindow.setMinimumSize(700, 700);
+    mainWindow.setMinimumSize(750, 700);
     mainWindow.setTitle('TF2 Server Launcher');
 
     mainWindow.on('closed', function () {
