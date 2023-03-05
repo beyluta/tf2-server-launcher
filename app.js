@@ -17,20 +17,22 @@ const {
     downloadZIPFileByURL
 } = require('./src/electron/remote-downloader.service.js');
 
-let mainWindow
+let MAINWINDOW;
+const DEFAULT_WINDOW_WIDTH = 750;
+const DEFAULT_WINDOW_HEIGHT = 700;
 
 function createWindow() {
-    mainWindow = new BrowserWindow({
+    MAINWINDOW = new BrowserWindow({
         icon: 'favicon.ico',
-        width: 750,
-        height: 700,
+        width: DEFAULT_WINDOW_WIDTH,
+        height: DEFAULT_WINDOW_HEIGHT,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
         }
     })
 
-    mainWindow.loadURL(
+    MAINWINDOW.loadURL(
         url.format({
             pathname: path.join(__dirname, `/dist/tf2-server-manager/index.html`),
             protocol: "file:",
@@ -39,12 +41,12 @@ function createWindow() {
     );
 
     // mainWindow.webContents.openDevTools();
-    mainWindow.setMenu(null);
-    mainWindow.setMinimumSize(750, 700);
-    mainWindow.setTitle('TF2 Server Launcher');
+    MAINWINDOW.setMenu(null);
+    MAINWINDOW.setMinimumSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+    MAINWINDOW.setTitle('TF2 Server Launcher');
 
-    mainWindow.on('closed', function () {
-        mainWindow = null;
+    MAINWINDOW.on('closed', function () {
+        MAINWINDOW = null;
     });
 }
 
@@ -55,7 +57,7 @@ app.on('window-all-closed', function () {
 })
 
 app.on('activate', function () {
-    if (mainWindow === null) createWindow()
+    if (MAINWINDOW === null) createWindow()
 })
 
 /* ------------------ IPC ------------------ */
