@@ -45,14 +45,14 @@ function createWindow() {
  * Gets the download links from the SourceMod or Metamod:Source download pages.
  * The link to the ZIP download file must be passed as a parameter.
  * 
- * @param {string} url
+ * @param {string} url URL to either the SourceMod or Metamod:Source download page.
 */
 async function getDownloadLinks(url) {
     return await new Promise((resolve, reject) => {
         request(url, (error, response, body) => {
             if (error) reject(error);
             const $ = cheerio.load(body);
-            const links = $('.quick-download').map((i, link) => $(link).attr('href')).get();
+            const links = $('.download-link[title="Windows download"]').map((i, el) => $(el).attr('href')).get();
             resolve(links);
         });
     });
@@ -60,8 +60,8 @@ async function getDownloadLinks(url) {
 
 /** 
  * Creates a file in the specified path.
- * @param {string} path - The path to the file.
- * @param {string} content - The content of the file.
+ * @param {string} path The path to the file.
+ * @param {string} content The content of the file.
 */
 async function createFile(path, content) {
     return await new Promise((resolve, reject) => {
@@ -75,7 +75,7 @@ async function createFile(path, content) {
 /** 
  * Creates a folder in the specified path.
  * 
- * @param {string} path
+ * @param {string} path Path to the folder.
 */
 async function createFolder(path) {
     return await new Promise((resolve, reject) => {
@@ -88,7 +88,7 @@ async function createFolder(path) {
 
 /**
  * Deletes a folder recursively.
- * @param {string} path 
+ * @param {string} path Path to the folder.
  * @returns 
  */
 async function deleteFolderRecursively(path) {
@@ -105,8 +105,8 @@ async function deleteFolderRecursively(path) {
 /** 
  * Merges two directories recursively.
  * 
- * @param {string} rootDir1
- * @param {string} rootDir2
+ * @param {string} rootDir1 Directory to be merged. Will be merged into rootDir2.
+ * @param {string} rootDir2 Directory to be merged.
 */
 function deepMergeDir(rootDir1, rootDir2) {
     const files1 = fs.readdirSync(rootDir1);
@@ -132,9 +132,9 @@ function deepMergeDir(rootDir1, rootDir2) {
 /** 
  * Downloads a ZIP file from a URL and saves it to a path.
  * 
- * @param {string} name
- * @param {string} url
- * @param {string} path
+ * @param {string} name Name of the ZIP file.
+ * @param {string} url URL to the ZIP file.
+ * @param {string} path Path to save the ZIP file.
 */
 async function downloadZIPFileByURL(name, url, path) {
     const file = fs.createWriteStream(name);
@@ -200,7 +200,7 @@ ipcMain.on('create-server-directory', async (event, arg) => {
 });
 
 ipcMain.on('create-directory-config', async (event, arg) => {
-    await createFolder(`${arg.savePath}\\config.json`, JSON.stringify(arg.config));
+    await createFile(`${arg.savePath}\\config.json`, JSON.stringify(arg.config));
     event.reply('create-directory-config-reply', 'success');
 });
 
