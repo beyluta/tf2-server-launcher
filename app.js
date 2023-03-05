@@ -200,14 +200,7 @@ ipcMain.on('create-server-directory', async (event, arg) => {
 });
 
 ipcMain.on('create-directory-config', async (event, arg) => {
-    await new Promise((resolve, reject) => {
-        fs.writeFile(`${arg.savePath}\\config.json`, JSON.stringify(arg.config), (err) => {
-            if (err) reject(err);
-
-            resolve();
-        });
-    });
-
+    await createFolder(`${arg.savePath}\\config.json`, JSON.stringify(arg.config));
     event.reply('create-directory-config-reply', 'success');
 });
 
@@ -296,56 +289,32 @@ ipcMain.on('download-file', async (event, arg) => {
             })
         });
 
-        await new Promise((resolve, reject) => {
-            fs.writeFile(arg.savePath.replace('steamcmd.zip', 'tf2_ds.txt'), `
+        await createFile(arg.savePath.replace('steamcmd.zip', 'tf2_ds.txt'), `
         @ShutdownOnFailedCommand 1
         @NoPromptForPassword 1
         force_install_dir ${arg.savePath.replace('steamcmd.zip', '')}
         login anonymous
         app_update 232250
         quit
-        `, (err) => {
-                if (err) reject(err);
+        `);
 
-                resolve();
-            });
-        });
-
-        await new Promise((resolve, reject) => {
-            fs.writeFile(arg.savePath.replace('steamcmd.zip', 'run.bat'), `
-            @echo off
-            steamcmd.exe +runscript tf2_ds.txt
-            `, (err) => {
-                if (err) reject(err);
-
-                resolve();
-            });
-        });
+        await createFile(arg.savePath.replace('steamcmd.zip', 'run.bat'), `
+        @echo off
+        steamcmd.exe +runscript tf2_ds.txt
+        `);
 
         await update();
 
-        await new Promise((resolve, reject) => {
-            fs.writeFile(arg.savePath.replace('steamcmd.zip', 'steamapps\\common\\Team Fortress 2 Dedicated Server\\run.bat'), `
-            @echo off
-            "${arg.savePath.replace('steamcmd.zip', 'steamapps\\common\\Team Fortress 2 Dedicated Server\\srcds.exe')}" ${config.args} ${config.ip ? '-ip ' + config.ip : ''} ${config.port ? '-port ' + config.port : ''}
-            `, (err) => {
-                if (err) reject(err);
+        await createFile(arg.savePath.replace('steamcmd.zip', 'steamapps\\common\\Team Fortress 2 Dedicated Server\\run.bat'), `
+        @echo off
+        "${arg.savePath.replace('steamcmd.zip', 'steamapps\\common\\Team Fortress 2 Dedicated Server\\srcds.exe')}" ${config.args} ${config.ip ? '-ip ' + config.ip : ''} ${config.port ? '-port ' + config.port : ''}
+        `);
 
-                resolve();
-            });
-        });
-
-        await new Promise((resolve, reject) => {
-            fs.writeFile(arg.savePath.replace('steamcmd.zip', 'steamapps\\common\\Team Fortress 2 Dedicated Server\\tf\\cfg\\server.cfg'), `
-            ${config.serverName ? 'hostname "' + config.serverName + '"' : ''}
-            ${config.serverPassword ? 'sv_password "' + config.serverPassword + '"' : ''}
-            ${config.configArgs ? config.configArgs : ''}
-            `.trim(), (err) => {
-                if (err) reject(err);
-
-                resolve();
-            });
-        });
+        await createFile(arg.savePath.replace('steamcmd.zip', 'steamapps\\common\\Team Fortress 2 Dedicated Server\\tf\\cfg\\server.cfg'), `
+        ${config.serverName ? 'hostname "' + config.serverName + '"' : ''}
+        ${config.serverPassword ? 'sv_password "' + config.serverPassword + '"' : ''}
+        ${config.configArgs ? config.configArgs : ''}
+        `.trim());
     } else {
         await update();
     }
