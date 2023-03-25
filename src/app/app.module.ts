@@ -9,6 +9,7 @@ import { ServerFormComponent } from './components/server-form/server-form.compon
 import { LoaderComponent } from './components/loader/loader.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
+import { TitleBarComponent } from './components/title-bar/title-bar.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ContextMenuComponent } from './components/context-menu/context-menu.com
     ServerFormComponent,
     LoaderComponent,
     SideBarComponent,
-    ContextMenuComponent
+    ContextMenuComponent,
+    TitleBarComponent
   ],
   imports: [
     BrowserModule,

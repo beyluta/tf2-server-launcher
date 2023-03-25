@@ -26,6 +26,7 @@ function createWindow() {
         icon: 'favicon.ico',
         width: DEFAULT_WINDOW_WIDTH,
         height: DEFAULT_WINDOW_HEIGHT,
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
@@ -61,6 +62,14 @@ app.on('activate', function () {
 })
 
 /* ------------------ IPC ------------------ */
+ipcMain.on('close-window', async (event, arg) => {
+    MAINWINDOW.close();
+});
+
+ipcMain.on('minimize-window', async (event, arg) => {
+    MAINWINDOW.minimize();
+});
+
 ipcMain.on('navigate-to-folder', async (event, arg) => {
     exec(`start "" "${arg.savePath}"`);
 });

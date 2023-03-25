@@ -118,4 +118,12 @@ export class ElectronIPCService {
       });
     });
   }
+
+  closeWindow() {
+    this.electronService.ipcRenderer.send('close-window');
+  }
+
+  minimizeWindow() {
+    this.electronService.ipcRenderer.send('minimize-window');
+  }
 }

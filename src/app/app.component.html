@@ -1,91 +1,95 @@
 <div class="main-view">
+  <app-title-bar></app-title-bar>
+
   <app-side-bar (switchTab)="tab($event)"></app-side-bar>
 
-  <div class="box-srvs settings-container" *ngIf="activeTab === 'options'">
-    <h2 class="title">Settings and preferences</h2>
-    <div class="setting">
-      <label for="path"><h5>Path to the game servers</h5></label>
-      <input
-        type="text"
-        [(ngModel)]="defaultGameServersPath"
-        placeholder="C://TFGameServers"
-        disabled
-      />
-    </div>
-    <div class="setting">
-      <label for="path"><h5>URL to SteamCMD</h5></label>
-      <input
-        type="text"
-        [(ngModel)]="steamCMDDownloadURL"
-        (change)="updateConfig()"
-        placeholder="Remote URL"
-      />
-    </div>
-    <div class="setting">
-      <label for="path"><h5>URL to Sourcemod</h5></label>
-      <input
-        type="text"
-        [(ngModel)]="sourceModDownloadURL"
-        (change)="updateConfig()"
-        placeholder="Remote URL"
-      />
-    </div>
-    <div class="setting">
-      <label for="path"><h5>URL to Metamod</h5></label>
-      <input
-        type="text"
-        [(ngModel)]="metaModDownloadURL"
-        (change)="updateConfig()"
-        placeholder="Remote URL"
-      />
-    </div>
-  </div>
-
-  <div class="box-srvs" *ngIf="activeTab === 'servers'">
-    <div class="server-creation-tab">
-      <div class="tab-title">
-        <h2 class="title">List of dedicated servers</h2>
+  <div>
+    <div class="box-srvs settings-container" *ngIf="activeTab === 'options'">
+      <h2 class="title">Settings and preferences</h2>
+      <div class="setting">
+        <label for="path"><h5>Path to the game servers</h5></label>
+        <input
+          type="text"
+          [(ngModel)]="defaultGameServersPath"
+          placeholder="C://TFGameServers"
+          disabled
+        />
       </div>
-      <div class="create-srv" (click)="createGameServer()">
-        <h6>create</h6>
+      <div class="setting">
+        <label for="path"><h5>URL to SteamCMD</h5></label>
+        <input
+          type="text"
+          [(ngModel)]="steamCMDDownloadURL"
+          (change)="updateConfig()"
+          placeholder="Remote URL"
+        />
+      </div>
+      <div class="setting">
+        <label for="path"><h5>URL to Sourcemod</h5></label>
+        <input
+          type="text"
+          [(ngModel)]="sourceModDownloadURL"
+          (change)="updateConfig()"
+          placeholder="Remote URL"
+        />
+      </div>
+      <div class="setting">
+        <label for="path"><h5>URL to Metamod</h5></label>
+        <input
+          type="text"
+          [(ngModel)]="metaModDownloadURL"
+          (change)="updateConfig()"
+          placeholder="Remote URL"
+        />
       </div>
     </div>
 
-    <div class="no-servers-box" *ngIf="!gameServers.length">
-      <span class="warning">There doesn't seem to be anything here yet.</span>
-      <span class="warning">
-        Start by clicking on button above to create your first server.</span
-      >
-    </div>
-
-    <div class="servers">
-      <div class="srv" *ngFor="let gameServer of gameServers">
-        <div>
-          <h6 class="serverName">{{ gameServer }}</h6>
+    <div class="box-srvs" *ngIf="activeTab === 'servers'">
+      <div class="server-creation-tab">
+        <div class="tab-title">
+          <h2 class="title">List of dedicated servers</h2>
         </div>
+        <div class="create-srv" (click)="createGameServer()">
+          <h6>create</h6>
+        </div>
+      </div>
 
-        <div class="box-action-btn">
-          <app-context-menu
-            [items]="createContextMenuItems(gameServer)"
-          ></app-context-menu>
+      <div class="no-servers-box" *ngIf="!gameServers.length">
+        <span class="warning">There doesn't seem to be anything here yet.</span>
+        <span class="warning">
+          Start by clicking on button above to create your first server.</span
+        >
+      </div>
 
-          <div
-            class="action-btn download-server"
-            (click)="downloadFile(gameServer)"
-          >
-            <fa-icon [icon]="icons.faDownload"></fa-icon>
+      <div class="servers">
+        <div class="srv" *ngFor="let gameServer of gameServers">
+          <div>
+            <h6 class="serverName">{{ gameServer }}</h6>
           </div>
 
-          <div class="action-btn start" (click)="startServer(gameServer)">
-            <fa-icon
-              [icon]="icons.faPlay"
-              *ngIf="!activeGameServerPIDs.has(gameServer)"
-            ></fa-icon>
-            <fa-icon
-              [icon]="icons.faStop"
-              *ngIf="activeGameServerPIDs.has(gameServer)"
-              style="fill: #c0392b"
-            ></fa-icon>
+          <div class="box-action-btn">
+            <app-context-menu
+              [items]="createContextMenuItems(gameServer)"
+            ></app-context-menu>
+
+            <div
+              class="action-btn download-server"
+              (click)="downloadFile(gameServer)"
+            >
+              <fa-icon [icon]="icons.faDownload"></fa-icon>
+            </div>
+
+            <div class="action-btn start" (click)="startServer(gameServer)">
+              <fa-icon
+                [icon]="icons.faPlay"
+                *ngIf="!activeGameServerPIDs.has(gameServer)"
+              ></fa-icon>
+              <fa-icon
+                [icon]="icons.faStop"
+                *ngIf="activeGameServerPIDs.has(gameServer)"
+                style="fill: #c0392b"
+              ></fa-icon>
+            </div>
           </div>
         </div>
       </div>
