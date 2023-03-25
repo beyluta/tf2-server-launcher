@@ -21,6 +21,14 @@
   transition: .2s ease-in-out;
 }
 
+.m-left > span > img {
+  width: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+  margin-bottom: 2px;
+  transform: scaleX(-1);
+}
+
 .m-right {
   margin-right: 15px;
   display: flex;

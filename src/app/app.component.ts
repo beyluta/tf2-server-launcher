@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   public defaultGameServersPath: string = 'C:\\TFGameServers';
   public activeTab: string = 'servers';
   public activeGameServerPIDs: Map<string, number> = new Map();
-  public gameServers: [] = [];
+  public gameServers: any[] = [];
   public showCreateServerModal: boolean = false;
   public showLoaderModal: boolean = false;
   public showSourcemodLoaderModal: boolean = false;

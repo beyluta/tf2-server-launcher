@@ -18,6 +18,8 @@ app-title-bar {
   flex-direction: column;
   padding: 20px;
   row-gap: 20px;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 
 .box-srvs > .server-creation-tab {

@@ -1,9 +1,12 @@
 <div class="title-bar">
   <div class="m-left">
-    <span>TF2 Server Launcher</span>
+    <span><img src="assets/imgs/tf2.png" />TF2 Server Launcher</span>
   </div>
   <div class="m-right">
-    <fa-icon (click)="minimizeWindow()" [icon]="icons.faWindowMinimize"></fa-icon>
+    <fa-icon
+      (click)="minimizeWindow()"
+      [icon]="icons.faWindowMinimize"
+    ></fa-icon>
     <fa-icon (click)="closeWindow()" [icon]="icons.faClose"></fa-icon>
   </div>
 </div>
