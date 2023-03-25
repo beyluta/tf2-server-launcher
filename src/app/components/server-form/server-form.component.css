@@ -38,10 +38,12 @@ input {
     margin: 0;
     border: none;
     border-bottom: 2px solid var(--dark);
+    transition: .2s ease-in-out;
 }
 
 input:focus {
     outline: none;
+    border-bottom: 2px solid var(--light);
 }
 
 textarea {
@@ -54,10 +56,12 @@ textarea {
     border: none;
     border-bottom: 2px solid var(--dark);
     resize: none;
+    transition: .2s ease-in-out;
 }
 
 textarea:focus {
     outline: none;
+    border-bottom: 2px solid var(--light);
 }
 
 label {

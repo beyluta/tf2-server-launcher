@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import { faSlidersH, faDashboard } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-side-bar',
@@ -9,6 +10,10 @@ export class SideBarComponent {
   @Output() switchTab = new EventEmitter<string>();
   @ViewChild('optionsTab') optionsTabElement: any;
   @ViewChild('serversTab') serversTabElement: any;
+  public icons = {
+    faSlidersH,
+    faDashboard
+  };
 
   switch(tab: string) {
     this.setActive(tab);

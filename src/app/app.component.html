@@ -4,7 +4,7 @@
   <div class="box-srvs settings-container" *ngIf="activeTab === 'options'">
     <h2 class="title">Settings and preferences</h2>
     <div class="setting">
-      <label for="path"><h4>Path to the game servers</h4></label>
+      <label for="path"><h5>Path to the game servers</h5></label>
       <input
         type="text"
         [(ngModel)]="defaultGameServersPath"
@@ -13,7 +13,7 @@
       />
     </div>
     <div class="setting">
-      <label for="path"><h4>URL to SteamCMD</h4></label>
+      <label for="path"><h5>URL to SteamCMD</h5></label>
       <input
         type="text"
         [(ngModel)]="steamCMDDownloadURL"
@@ -22,7 +22,7 @@
       />
     </div>
     <div class="setting">
-      <label for="path"><h4>URL to Sourcemod</h4></label>
+      <label for="path"><h5>URL to Sourcemod</h5></label>
       <input
         type="text"
         [(ngModel)]="sourceModDownloadURL"
@@ -31,7 +31,7 @@
       />
     </div>
     <div class="setting">
-      <label for="path"><h4>URL to Metamod</h4></label>
+      <label for="path"><h5>URL to Metamod</h5></label>
       <input
         type="text"
         [(ngModel)]="metaModDownloadURL"
@@ -51,15 +51,12 @@
       </div>
     </div>
 
-    <!-- <div class="no-servers-box" *ngIf="!gameServers.length">
-      <h3>No servers found</h3>
-      <h6>Use the button below to create your first server</h6>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-        <path
-          d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
-        />
-      </svg>
-    </div> -->
+    <div class="no-servers-box" *ngIf="!gameServers.length">
+      <span class="warning">There doesn't seem to be anything here yet.</span>
+      <span class="warning">
+        Start by clicking on button above to create your first server.</span
+      >
+    </div>
 
     <div class="servers">
       <div class="srv" *ngFor="let gameServer of gameServers">
@@ -68,69 +65,27 @@
         </div>
 
         <div class="box-action-btn">
-          <div
-            class="action-btn trash"
-            (click)="deleteServerFiles(gameServer)"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-              <path
-                d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z"
-              />
-            </svg>
-          </div>
-
-          <div class="action-btn file" (click)="navigateToFolder(gameServer)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path
-                d="M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"
-              />
-            </svg>
-          </div>
-
-          <div
-            class="action-btn download-sourcemod"
-            (click)="downloadSourcemod(gameServer)"
-          >
-            <img
-              width="20px"
-              height="auto"
-              src="assets/imgs/sm.png"
-            />
-          </div>
+          <app-context-menu
+            [items]="createContextMenuItems(gameServer)"
+          ></app-context-menu>
 
           <div
             class="action-btn download-server"
             (click)="downloadFile(gameServer)"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path
-                d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"
-              />
-            </svg>
+            <fa-icon [icon]="icons.faDownload"></fa-icon>
           </div>
 
           <div class="action-btn start" (click)="startServer(gameServer)">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <fa-icon
+              [icon]="icons.faPlay"
               *ngIf="!activeGameServerPIDs.has(gameServer)"
-              style="transform: translateY(2px)"
-              viewBox="0 0 384 512"
-            >
-              <path
-                d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
-              />
-            </svg>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            ></fa-icon>
+            <fa-icon
+              [icon]="icons.faStop"
               *ngIf="activeGameServerPIDs.has(gameServer)"
-              style="transform: translateY(2px); fill: #c0392b"
-              viewBox="0 0 384 512"
-            >
-              <path
-                d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"
-              />
-            </svg>
+              style="fill: #c0392b"
+            ></fa-icon>
           </div>
         </div>
       </div>

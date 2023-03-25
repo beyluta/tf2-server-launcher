@@ -1,0 +1,8 @@
+<div class="menu-wrapper" (click)="toggle()">
+  <fa-icon [icon]="icons.faEllipsisV"></fa-icon>
+  <div class="menu" *ngIf="show">
+    <ng-container *ngFor="let item of items">
+      <div class="item" (click)="item.action()">{{ item.name }}</div>
+    </ng-container>
+  </div>
+</div>
