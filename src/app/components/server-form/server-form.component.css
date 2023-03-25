@@ -5,7 +5,7 @@
 
 .server-form {
     width: 600px;
-    background-color: rgb(35, 38, 39);
+    background-color: var(--light-dark);
     border-radius: 5px;
     position: absolute;
     top: 50%;
@@ -27,7 +27,7 @@
 }
 
 .create-srv:nth-child(1) {
-    background: var(--primary);
+    background: var(--dark);
 }
 
 input {
@@ -37,7 +37,7 @@ input {
     padding: 0 0 5px;
     margin: 0;
     border: none;
-    border-bottom: 2px solid var(--primary);
+    border-bottom: 2px solid var(--dark);
 }
 
 input:focus {
@@ -52,7 +52,7 @@ textarea {
     padding: 0 0 5px;
     margin: 0;
     border: none;
-    border-bottom: 2px solid var(--primary);
+    border-bottom: 2px solid var(--dark);
     resize: none;
 }
 
@@ -93,8 +93,9 @@ label > h5 {
     padding: 10px 20px;
     font-size: 14px;
     border-radius: 5px;
-    background: rgb(81, 87, 91);
+    background: var(--light);
     display: flex;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
     justify-content: center;
     align-items: center;
     cursor: pointer;

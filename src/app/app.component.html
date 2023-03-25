@@ -2,29 +2,56 @@
   <app-side-bar (switchTab)="tab($event)"></app-side-bar>
 
   <div class="box-srvs settings-container" *ngIf="activeTab === 'options'">
-    <h1>Settings and preferences</h1>
+    <h2 class="title">Settings and preferences</h2>
     <div class="setting">
       <label for="path"><h4>Path to the game servers</h4></label>
-      <input type="text" [(ngModel)]="defaultGameServersPath" placeholder="C://TFGameServers" disabled />
+      <input
+        type="text"
+        [(ngModel)]="defaultGameServersPath"
+        placeholder="C://TFGameServers"
+        disabled
+      />
     </div>
     <div class="setting">
       <label for="path"><h4>URL to SteamCMD</h4></label>
-      <input type="text" [(ngModel)]="steamCMDDownloadURL" (change)="updateConfig()" placeholder="Remote URL" />
+      <input
+        type="text"
+        [(ngModel)]="steamCMDDownloadURL"
+        (change)="updateConfig()"
+        placeholder="Remote URL"
+      />
     </div>
     <div class="setting">
       <label for="path"><h4>URL to Sourcemod</h4></label>
-      <input type="text" [(ngModel)]="sourceModDownloadURL" (change)="updateConfig()" placeholder="Remote URL" />
+      <input
+        type="text"
+        [(ngModel)]="sourceModDownloadURL"
+        (change)="updateConfig()"
+        placeholder="Remote URL"
+      />
     </div>
     <div class="setting">
       <label for="path"><h4>URL to Metamod</h4></label>
-      <input type="text" [(ngModel)]="metaModDownloadURL" (change)="updateConfig()" placeholder="Remote URL" />
+      <input
+        type="text"
+        [(ngModel)]="metaModDownloadURL"
+        (change)="updateConfig()"
+        placeholder="Remote URL"
+      />
     </div>
   </div>
 
   <div class="box-srvs" *ngIf="activeTab === 'servers'">
-    <h1>List of dedicated servers</h1>
+    <div class="server-creation-tab">
+      <div class="tab-title">
+        <h2 class="title">List of dedicated servers</h2>
+      </div>
+      <div class="create-srv" (click)="createGameServer()">
+        <h6>create</h6>
+      </div>
+    </div>
 
-    <div class="no-servers-box" *ngIf="!gameServers.length">
+    <!-- <div class="no-servers-box" *ngIf="!gameServers.length">
       <h3>No servers found</h3>
       <h6>Use the button below to create your first server</h6>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
@@ -32,7 +59,7 @@
           d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
         />
       </svg>
-    </div>
+    </div> -->
 
     <div class="servers">
       <div class="srv" *ngFor="let gameServer of gameServers">
@@ -44,7 +71,6 @@
           <div
             class="action-btn trash"
             (click)="deleteServerFiles(gameServer)"
-            style="background: #c0392b"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
               <path
@@ -68,7 +94,6 @@
             <img
               width="20px"
               height="auto"
-              style="transform: translateY(2px)"
               src="assets/imgs/sm.png"
             />
           </div>
@@ -109,10 +134,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="create-srv" (click)="createGameServer()">
-      <h6>+ Create</h6>
     </div>
   </div>
 </div>

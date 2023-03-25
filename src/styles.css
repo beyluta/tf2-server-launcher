@@ -3,6 +3,9 @@
     --primary: rgb(199, 79, 55);
     --secondary: rgb(210, 196, 78);
     --special: rgb(48, 61, 87);
+    --light-dark: #38394F;
+    --dark: #272B38;
+    --light: #6F6B94;
 }
 
 html, body {
@@ -10,20 +13,20 @@ html, body {
     padding: 0;
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
-    background-color: rgb(30, 32, 33);
+    background-color: var(--light-dark);
     color: white;
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgb(30, 32, 33);
-    border-radius: 10px;
+    background: var(--light-dark);
+    border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgb(199, 79, 55);
-    border-radius: 10px;
+    background: var(--light);
+    border-radius: 5px;
 }
