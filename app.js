@@ -1,29 +1,39 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const request = require('request');
-const cheerio = require('cheerio');
 const child = require('child-process-promise');
 const { spawn, exec } = require('child_process');
 const url = require("url");
 const path = require("path");
 const http = require('http');
-const https = require('https');
 const fs = require('fs');
 const AdmZip = require("adm-zip");
+const {
+    createFile,
+    createFolder,
+    deepMergeDir,
+    deleteFolderRecursively
+} = require('./src/electron/file.service.js');
+const {
+    getDownloadLinks,
+    downloadZIPFileByURL
+} = require('./src/electron/remote-downloader.service.js');
 
-let mainWindow
+let MAINWINDOW;
+const DEFAULT_WINDOW_WIDTH = 750;
+const DEFAULT_WINDOW_HEIGHT = 700;
 
 function createWindow() {
-    mainWindow = new BrowserWindow({
+    MAINWINDOW = new BrowserWindow({
         icon: 'favicon.ico',
-        width: 750,
-        height: 700,
+        width: DEFAULT_WINDOW_WIDTH,
+        height: DEFAULT_WINDOW_HEIGHT,
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
         }
     })
 
-    mainWindow.loadURL(
+    MAINWINDOW.loadURL(
         url.format({
             pathname: path.join(__dirname, `/dist/tf2-server-manager/index.html`),
             protocol: "file:",
@@ -31,140 +41,13 @@ function createWindow() {
         })
     );
 
-    // mainWindow.webContents.openDevTools();
-    mainWindow.setMenu(null);
-    mainWindow.setMinimumSize(750, 700);
-    mainWindow.setTitle('TF2 Server Launcher');
+    // MAINWINDOW.webContents.openDevTools();
+    MAINWINDOW.setMenu(null);
+    MAINWINDOW.setMinimumSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+    MAINWINDOW.setTitle('TF2 Server Launcher');
 
-    mainWindow.on('closed', function () {
-        mainWindow = null;
-    });
-}
-
-/** 
- * Gets the download links from the SourceMod or Metamod:Source download pages.
- * The link to the ZIP download file must be passed as a parameter.
- * 
- * @param {string} url URL to either the SourceMod or Metamod:Source download page.
-*/
-async function getDownloadLinks(url) {
-    return await new Promise((resolve, reject) => {
-        request(url, (error, response, body) => {
-            if (error) reject(error);
-            const $ = cheerio.load(body);
-            const links = $('.download-link[title="Windows download"]').map((i, el) => $(el).attr('href')).get();
-            resolve(links);
-        });
-    });
-}
-
-/** 
- * Creates a file in the specified path.
- * @param {string} path The path to the file.
- * @param {string} content The content of the file.
-*/
-async function createFile(path, content) {
-    return await new Promise((resolve, reject) => {
-        fs.writeFile(path, content, (err) => {
-            if (err) reject(err);
-            resolve();
-        });
-    });
-}
-
-/** 
- * Creates a folder in the specified path.
- * 
- * @param {string} path Path to the folder.
-*/
-async function createFolder(path) {
-    return await new Promise((resolve, reject) => {
-        fs.mkdir(path, (err) => {
-            if (err) reject(err);
-            resolve();
-        });
-    });
-}
-
-/**
- * Deletes a folder recursively.
- * @param {string} path Path to the folder.
- * @returns 
- */
-async function deleteFolderRecursively(path) {
-    return await new Promise((resolve, reject) => {
-        if (fs.existsSync(path)) {
-            fs.rmdir(path, { recursive: true, force: true }, (err) => {
-                if (err) reject(err);
-                resolve();
-            });
-        }
-    });
-}
-
-/** 
- * Merges two directories recursively.
- * 
- * @param {string} rootDir1 Directory to be merged. Will be merged into rootDir2.
- * @param {string} rootDir2 Directory to be merged.
-*/
-function deepMergeDir(rootDir1, rootDir2) {
-    const files1 = fs.readdirSync(rootDir1);
-    const files2 = fs.readdirSync(rootDir2);
-
-    for (let i = 0; i < files1.length; i++) {
-        for (let j = 0; j < files2.length; j++) {
-            if (files1[i] === files2[j]) {
-                deepMergeDir(`${rootDir1}\\${files1[i]}`, `${rootDir2}\\${files2[j]}`);
-            }
-        }
-    }
-
-    for (let i = 0; i < files1.length; i++) {
-        if (!files2.includes(files1[i])) {
-            fs.renameSync(`${rootDir1}\\${files1[i]}`, `${rootDir2}\\${files1[i]}`);
-        }
-    }
-
-    fs.rmdirSync(rootDir1);
-}
-
-/** 
- * Downloads a ZIP file from a URL and saves it to a path.
- * 
- * @param {string} name Name of the ZIP file.
- * @param {string} url URL to the ZIP file.
- * @param {string} path Path to save the ZIP file.
-*/
-async function downloadZIPFileByURL(name, url, path) {
-    const file = fs.createWriteStream(name);
-    const request = https.get(url, function (response) {
-        response.pipe(file);
-    });
-
-    await new Promise((resolve, reject) => {
-        file.on('finish', resolve);
-        file.on('error', reject);
-    });
-
-    await new Promise((resolve, reject) => {
-        fs.rename(name, `${path}\\${name}`, (err) => {
-            if (err) reject(err);
-            resolve();
-        });
-    });
-
-    await new Promise(resolve => {
-        const zip = new AdmZip(`${path}\\${name}`);
-        zip.extractAllTo(path, true);
-        resolve();
-    });
-
-    await new Promise((resolve, reject) => {
-        fs.unlink(`${path}\\${name}`, (err) => {
-            if (err) reject(err);
-            resolve();
-        });
+    MAINWINDOW.on('closed', function () {
+        MAINWINDOW = null;
     });
 }
 
@@ -175,10 +58,18 @@ app.on('window-all-closed', function () {
 })
 
 app.on('activate', function () {
-    if (mainWindow === null) createWindow()
+    if (MAINWINDOW === null) createWindow()
 })
 
 /* ------------------ IPC ------------------ */
+ipcMain.on('close-window', async (event, arg) => {
+    MAINWINDOW.close();
+});
+
+ipcMain.on('minimize-window', async (event, arg) => {
+    MAINWINDOW.minimize();
+});
+
 ipcMain.on('navigate-to-folder', async (event, arg) => {
     exec(`start "" "${arg.savePath}"`);
 });

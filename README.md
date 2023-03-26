@@ -12,11 +12,11 @@
 
 Make sure these are installed. There is no guarantee that it will work on other versions of Angular, Electron, or Node.
 
-> This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.5.
+> This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.5
 
 > This project uses [Node](https://github.com/nodejs/node) version 19.3.0
 
-> This project uses [Electron](https://www.npmjs.com/package/electron) version 10.0.0.
+> This project uses [Electron](https://www.npmjs.com/package/electron) version 10.0.0
 
 <br>        
 
@@ -47,11 +47,8 @@ npm run start
 
 # Usage
 
-### 1- Create a server
-![Create a server](src/assets/gifs/sv-create.gif)
+### 1- Create and download a server
+![Create a server](src/assets/gifs/create-start-server.gif)
 
-### 2- Download / Update a server
-![Download / Update a server](src/assets/gifs/sv-download.gif)
-
-### 3- Launch a server
-![Launch a server](src/assets/gifs/sv-launch.gif)
+### 2- Start or stop a server
+![Download / Update a server](src/assets/gifs/start-server.gif)

@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ElectronIPCService } from './services/electron/electron-ipc.service';
+import { faDownload, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,16 @@ export class AppComponent implements OnInit {
   public defaultGameServersPath: string = 'C:\\TFGameServers';
   public activeTab: string = 'servers';
   public activeGameServerPIDs: Map<string, number> = new Map();
-  public gameServers: [] = [];
+  public gameServers: any[] = [];
   public showCreateServerModal: boolean = false;
   public showLoaderModal: boolean = false;
   public showSourcemodLoaderModal: boolean = false;
   public showDefaultLoader: boolean = false;
+  public icons = {
+    faDownload,
+    faPlay,
+    faStop
+  };
 
   constructor(private electronIPCService: ElectronIPCService) { }
 
@@ -129,5 +135,18 @@ export class AppComponent implements OnInit {
     };
     await this.electronIPCService.replaceConfigFile({ savePath: this.defaultGameServersPath, config });
     this.showLoaderModal = false;
+  }
+
+  createContextMenuItems(name: string) {
+    return [{
+      name: 'Get SourceMod',
+      action: () => this.downloadSourcemod(name)
+    }, {
+      name: 'Open Folder',
+      action: () => this.navigateToFolder(name)
+    }, {
+      name: 'Delete',
+      action: () => this.deleteServerFiles(name)
+    }]
   }
 }

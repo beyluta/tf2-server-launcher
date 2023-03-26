@@ -1,0 +1,45 @@
+.title-bar {
+  height: 100%;
+  background: var(--dark);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  z-index: 999;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+}
+
+.m-left {
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  user-select: none;
+  margin-left: 15px;
+  font-family: "Roboto", sans-serif;
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+
+.m-left > span > img {
+  width: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+  margin-bottom: 2px;
+  transform: scaleX(-1);
+}
+
+.m-right {
+  margin-right: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+
+fa-icon:hover {
+  transition: .2s ease-in-out;
+  color: var(--light);
+}

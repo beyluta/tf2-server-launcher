@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import { faSlidersH, faDashboard } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-side-bar',
@@ -7,8 +8,30 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class SideBarComponent {
   @Output() switchTab = new EventEmitter<string>();
+  @ViewChild('optionsTab') optionsTabElement: any;
+  @ViewChild('serversTab') serversTabElement: any;
+  public icons = {
+    faSlidersH,
+    faDashboard
+  };
 
   switch(tab: string) {
+    this.setActive(tab);
     this.switchTab.emit(tab);
+  }
+
+  setActive(tab: string) {
+    this.optionsTabElement.nativeElement.classList.remove('selected');
+    this.serversTabElement.nativeElement.classList.remove('selected');
+
+    switch (tab) {
+      case 'options':
+        this.optionsTabElement.nativeElement.classList.add('selected');
+        break;
+
+      case 'servers':
+        this.serversTabElement.nativeElement.classList.add('selected');
+        break;
+    }
   }
 }
