@@ -187,6 +187,14 @@ app-title-bar {
   display: block;
 }
 
+.warning-section {
+  font-weight: bold;
+}
+
+.warning-section:not(:first-child) {
+  margin-top: 35px !important;
+}
+
 .no-servers-box > *:not(:first-child) {
   margin-top: 10px;
 }
@@ -198,7 +206,8 @@ app-title-bar {
 
 .settings-container > h1,
 h3,
-h6, h5 {
+h6,
+h5 {
   margin: 0;
   padding: 0;
 }

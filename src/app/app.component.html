@@ -55,10 +55,43 @@
       </div>
 
       <div class="no-servers-box" *ngIf="!gameServers.length">
+        <span class="warning warning-section">Creating a server</span>
         <span class="warning">There doesn't seem to be anything here yet.</span>
         <span class="warning">
-          Start by clicking on button above to create your first server.</span
+          Start by clicking on the button above to create your first
+          server.</span
         >
+        <span class="warning warning-section">Port forwarding</span>
+        <span class="warning">
+          <b>1.</b> Log in to your router's admin panel. This can usually be
+          done by entering the router's IP address in a web browser
+        </span>
+        <span class="warning">
+          <b>2.</b> Find the port forwarding section and create a new rule
+        </span>
+        <span class="warning">
+          <b>3.</b> Set the protocol to TCP and the port to 27015 (or whatever
+          port you set up)
+        </span>
+        <span class="warning">
+          <b>4.</b> Set the IP address to the IP address of the computer running
+          the server
+        </span>
+        <span class="warning">
+          <b>5.</b> Save the rule and exit the router's admin panel
+        </span>
+        <span class="warning">
+          <b>6.</b> Search for your public IP address on Google and give it to
+          your friends.
+        </span>
+
+        <span class="warning warning-section">Contributions</span>
+        <span class="warning">Project started by <b><i>Beyluta</i></b></span>
+        <span class="warning">
+          Have any suggestions, ideas, or bugs regarding project? feel free to
+          open an issue on Github.
+        </span>
+        <span class="warning">If you have experience working with Angular and Electron then you are welcome to contribute to the project. This project will continue to be maintained as long as there is demand for it.</span>
       </div>
 
       <div class="servers">

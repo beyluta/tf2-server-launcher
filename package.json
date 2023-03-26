@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng build && electron .",
-    "pack": "ng build && electron-packager . tf2-server-launcher --icon=\".\\favicon.ico\" --platform=win32 --asar --overwrite",
+    "pack": "ng build && electron-packager . tf2-server-launcher --icon=\".\\favicon.ico\" --platform=win32 --arch=x64 --overwrite",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
