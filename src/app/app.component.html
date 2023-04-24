@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div class="no-servers-box" *ngIf="!gameServers.length">
+      <div class="no-servers-box" *ngIf="!gameServerInformation.length">
         <span class="warning warning-section">Creating a server</span>
         <span class="warning">There doesn't seem to be anything here yet.</span>
         <span class="warning">
@@ -95,31 +95,31 @@
       </div>
 
       <div class="servers">
-        <div class="srv" *ngFor="let gameServer of gameServers">
+        <div class="srv" *ngFor="let gameServer of gameServerInformation">
           <div>
-            <h6 class="serverName">{{ gameServer }}</h6>
+            <h6 class="serverName">{{ gameServer.name }}</h6>
           </div>
 
           <div class="box-action-btn">
             <app-context-menu
-              [items]="createContextMenuItems(gameServer)"
+              [items]="createContextMenuItems(gameServer.name)"
             ></app-context-menu>
 
             <div
               class="action-btn download-server"
-              (click)="downloadFile(gameServer)"
+              (click)="downloadFile(gameServer.name)"
             >
               <fa-icon [icon]="icons.faDownload"></fa-icon>
             </div>
 
-            <div class="action-btn start" (click)="startServer(gameServer)">
+            <div class="action-btn start" (click)="startServer(gameServer.name)">
               <fa-icon
                 [icon]="icons.faPlay"
-                *ngIf="!activeGameServerPIDs.has(gameServer)"
+                *ngIf="!activeGameServerPIDs.has(gameServer.name)"
               ></fa-icon>
               <fa-icon
                 [icon]="icons.faStop"
-                *ngIf="activeGameServerPIDs.has(gameServer)"
+                *ngIf="activeGameServerPIDs.has(gameServer.name)"
                 style="fill: #c0392b"
               ></fa-icon>
             </div>

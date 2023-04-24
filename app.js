@@ -41,7 +41,7 @@ function createWindow() {
         })
     );
 
-    // MAINWINDOW.webContents.openDevTools();
+    MAINWINDOW.webContents.openDevTools();
     MAINWINDOW.setMenu(null);
     MAINWINDOW.setMinimumSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
     MAINWINDOW.setTitle('TF2 Server Launcher');

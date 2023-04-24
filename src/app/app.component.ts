@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ElectronIPCService } from './services/electron/electron-ipc.service';
 import { faDownload, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+import { GameServer } from './templates/server.template';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
   public defaultGameServersPath: string = 'C:\\TFGameServers';
   public activeTab: string = 'servers';
   public activeGameServerPIDs: Map<string, number> = new Map();
-  public gameServers: any[] = [];
+  public gameServerInformation: GameServer[] = [];
   public showCreateServerModal: boolean = false;
   public showLoaderModal: boolean = false;
   public showSourcemodLoaderModal: boolean = false;
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit {
   ngAfterViewInit() {
     var initialGameServers = setInterval(async () => {
       await this.loadGameServers();
-      if (this.gameServers.length) {
+      if (this.gameServerInformation.length) {
         clearInterval(initialGameServers);
       }
     }, 1000);
@@ -71,9 +72,18 @@ export class AppComponent implements OnInit {
   }
 
   async loadGameServers() {
-    this.gameServers = await this.electronIPCService.getDirectories({
+    this.gameServerInformation = (await this.electronIPCService.getDirectories({
       savePath: this.defaultGameServersPath
-    });
+    })).map((serverName: any) => {
+      const server = new GameServer();
+      server.name = serverName;
+      server.playerCount = 0;
+      return server;
+    });      
+  }
+
+  async updateServerInformation() {
+
   }
 
   navigateToFolder(path: string) {
